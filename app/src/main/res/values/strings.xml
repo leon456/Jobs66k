@@ -19,6 +19,5 @@
     <color name="default_label">#999999</color>
     <color name="label_success">#5cb85c</color>
     <color name="label_danger">#d9534f</color>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>
