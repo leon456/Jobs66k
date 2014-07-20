@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="240dp"
+    android:padding="10dp">
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/newImageView"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:background="@drawable/green_new"
+        android:text="New"
+        android:layout_marginLeft="10dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Title"
+        android:id="@+id/titleTextView"
+        android:layout_toEndOf="@+id/newImageView"
+        android:layout_alignTop="@+id/dateTextView"
+        android:layout_toRightOf="@+id/newImageView"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:ellipsize="end"
+        android:lines="1"
+        android:paddingTop="10dp"
+        android:layout_toLeftOf="@+id/dateTextView" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Job Name"
+        android:id="@+id/jobTextView"
+        android:layout_toEndOf="@id/titleTextView"
+        android:layout_below="@+id/newImageView"
+        android:layout_alignLeft="@+id/titleTextView"
+        android:layout_alignStart="@+id/titleTextView"
+        android:paddingBottom="10dp"
+        android:padding="5dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Date"
+        android:id="@+id/dateTextView"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="10dp"/>
+
+</RelativeLayout>

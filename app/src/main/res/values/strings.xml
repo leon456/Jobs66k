@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">66k Jobs</string>
+    <string name="action_settings">Settings</string>
+    <string name="ad_unit_id">ca-app-pub-3583863300575091/2098427549</string>
+    <array name="categories">
+        <item>視覺設計</item>
+        <item>程式設計</item>
+        <item>網路行銷</item>
+        <item>市場開發 / 業務</item>
+        <item>網站內容編輯</item>
+        <item>行銷 / 企劃</item>
+        <item>其他</item>
+        <item>醫療</item>
+        <item>電子業</item>
+    </array>
+
+    <color name="default_label">#999999</color>
+    <color name="label_success">#5cb85c</color>
+    <color name="label_danger">#d9534f</color>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+</resources>
