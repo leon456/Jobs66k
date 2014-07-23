@@ -17,6 +17,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.leon456.jobs66k.view.MyListView;
+
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.HashMap;
@@ -29,11 +31,11 @@ import java.util.logging.SimpleFormatter;
  * A simple {@link Fragment} subclass.
  *
  */
-public class JobListFragment extends Fragment {
+public class JobListFragment extends Fragment implements OnDetectScrollListener{
 
 
     private static final String TAG = "JobListFragment";
-    private ListView listView;
+    private MyListView listView;
     private LayoutInflater mInflater;
     private List<HashMap<String,String>> mDatas;
     private JobListAdapter mAdapter;
@@ -56,10 +58,23 @@ public class JobListFragment extends Fragment {
         mInflater = inflater;
 
         View view = inflater.inflate(R.layout.fragment_job_list, container, false);
-        listView = (ListView)view.findViewById(R.id.listView);
+        listView = (MyListView)view.findViewById(R.id.listView);
+        listView.setOnDetectScrollListener(this);
         listView.setAdapter(mAdapter = new JobListAdapter());
         mAdapter.notifyDataSetChanged();
         return view;
+    }
+
+    @Override
+    public void onUpScrolling() {
+        //Toast.makeText(getActivity(),"Up",Toast.LENGTH_LONG).show();
+        //getActivity().getActionBar().hide();
+    }
+
+    @Override
+    public void onDownScrolling() {
+        //Toast.makeText(getActivity(),"Down",Toast.LENGTH_LONG).show();
+        //getActivity().getActionBar().show();
     }
 
     class JobListAdapter extends BaseAdapter {

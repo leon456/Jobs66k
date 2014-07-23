@@ -5,7 +5,7 @@
     tools:context="jobs66k.leon456.com.jobs66k.JobListFragment">
 
 
-    <ListView
+    <com.leon456.jobs66k.view.MyListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/listView"

@@ -30,7 +30,7 @@ public class WebViewFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		Bundle args = this.getArguments();
-        String url = "http://66kjobs.tw/"+args.getString("detail");
+        String url = args.getString("detail");
 
 
 		View view = inflater.inflate(R.layout.fragment_web_view, container,false);
