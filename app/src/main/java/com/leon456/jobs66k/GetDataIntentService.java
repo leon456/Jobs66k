@@ -6,6 +6,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
@@ -26,6 +27,7 @@ import java.util.List;
 
 public class GetDataIntentService extends Service {
     private static final String TAG = "GetDataIntentService";
+    private SharedPreferences settings;
     private Handler handler = new Handler();
     private boolean hasNew = false;
     private String title;
@@ -50,8 +52,9 @@ public class GetDataIntentService extends Service {
 
     private Runnable showTime = new Runnable() {
         public void run() {
+            settings = getSharedPreferences(getString(R.string.app_name), 0);
             //log目前時間
-            final String[] categories  =  getResources().getStringArray(R.array.categories);
+            final String[] categories = getResources().getStringArray(R.array.categories);
 
 
             Ion.with(GetDataIntentService.this).load("http://66kjobs.tw/").asString()
@@ -63,10 +66,11 @@ public class GetDataIntentService extends Service {
                             Elements els = doc.select("#myTabContent");
                             Element myTabContent = els.first();
                             Elements tables = myTabContent.select("table");
-                            Loop: for (int i = 0; i < tables.size(); i++) {
+                            Loop:
+                            for (int i = 0; i < tables.size(); i++) {
                                 Element table = tables.get(i);
                                 Elements trs = table.select("tr");
-                                List<HashMap<String,String>> job = new ArrayList<HashMap<String, String>>();
+                                List<HashMap<String, String>> job = new ArrayList<HashMap<String, String>>();
 
 
                                 for (Element tr : trs) {
@@ -80,12 +84,12 @@ public class GetDataIntentService extends Service {
                                         switch (j) {
                                             case 0:
                                                 data.put("title", td.text());
-                                                if(td.text().trim().contains("NEW")) {
+                                                if (td.text().trim().contains("NEW")) {
                                                     Log.i(TAG, "******Get New*******");
                                                     Log.i(TAG, td.text());
                                                     hasNew = true;
                                                     title = categories[i];
-                                                    content = td.text() + "-" +tds.get(1).text();
+                                                    content = td.text() + "-" + tds.get(1).text();
                                                     break Loop;
                                                 }
 
@@ -103,12 +107,20 @@ public class GetDataIntentService extends Service {
                                 }
                             }
 
-                            if(hasNew)
-                                sendNotification(title,content);
+                            if (hasNew) {
+                                if(settings.getString("title",title)==null)
+                                    sendNotification(title, content);
+                                else{
+                                   SharedPreferences.Editor editor =  settings.edit();
+                                   editor.putString("title",title);
+                                   editor.commit();
+                                }
+
+                            }
                         }
                     });
 
-            handler.postDelayed(this,24 * 60 * 60 * 1000);
+            handler.postDelayed(this, 24 * 60 * 60 * 1000);
         }
     };
 
