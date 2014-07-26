@@ -10,6 +10,7 @@ import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Handler;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.os.Bundle;
@@ -65,6 +66,10 @@ public class MainActivity extends Activity implements ActionBar.TabListener ,Mai
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Intent intent = new Intent();
+        intent.setClass(this,GetDataIntentService.class);
+        this.startService(intent);
 
         // Set up the action bar.
         final ActionBar actionBar = getActionBar();

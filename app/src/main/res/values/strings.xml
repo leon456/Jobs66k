@@ -4,7 +4,7 @@
     <string name="app_name">66k Jobs</string>
     <string name="action_settings">Settings</string>
     <string name="ad_unit_id">ca-app-pub-3583863300575091/2098427549</string>
-
+    <string name="noti_title">新的66K工作</string>
     <array name="categories">
         <item>視覺設計</item>
         <item>程式設計</item>
