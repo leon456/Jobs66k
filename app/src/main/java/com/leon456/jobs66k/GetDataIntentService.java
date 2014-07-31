@@ -108,14 +108,8 @@ public class GetDataIntentService extends Service {
                             }
 
                             if (hasNew) {
-                                if(settings.getString("title",title)==null)
+                                if(settings.getString(content,null)==null)
                                     sendNotification(title, content);
-                                else{
-                                   SharedPreferences.Editor editor =  settings.edit();
-                                   editor.putString("title",title);
-                                   editor.commit();
-                                }
-
                             }
                         }
                     });
@@ -126,12 +120,15 @@ public class GetDataIntentService extends Service {
 
 
     private void sendNotification(String title,String content){
+        SharedPreferences.Editor editor =  settings.edit();
+        editor.putString(content,content);
+        editor.commit();
+
         NotificationManager notificationManager=(NotificationManager)getSystemService(NOTIFICATION_SERVICE);
         //設定當按下這個通知之後要執行的activity
         Intent notifyIntent = new Intent(GetDataIntentService.this,MainActivity.class);
         notifyIntent.setFlags( Intent.FLAG_ACTIVITY_NEW_TASK);
-        PendingIntent appIntent= PendingIntent.getActivity(GetDataIntentService.this, 0,
-                notifyIntent, 0);
+        PendingIntent appIntent= PendingIntent.getActivity(GetDataIntentService.this, 0,notifyIntent, 0);
         Notification notification = new Notification();
         //設定出現在狀態列的圖示
         notification.icon= R.drawable.logo;
