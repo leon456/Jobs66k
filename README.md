@@ -9,4 +9,6 @@ https://play.google.com/store/apps/details?id=com.leon456.jobs66k
 
 When you install the app into your phone,please give me a 5 stars rating,thanks you
 
+![alt tag](https://github.com/leon456/Jobs66k/blob/master/66k.png)
+
 
