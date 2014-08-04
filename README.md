@@ -7,7 +7,7 @@ Here is the app link on Google Play Store
 
 https://play.google.com/store/apps/details?id=com.leon456.jobs66k
 
-When you install the app into your phone,please give me a 5 stars rating,thanks you
+When you install the app into your phone,please give me a 5 stars rating,thank you
 
 ![alt tag](https://github.com/leon456/Jobs66k/blob/master/66k.png)
 
