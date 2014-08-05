@@ -7,9 +7,11 @@ import java.util.Locale;
 
 import android.app.Activity;
 import android.app.ActionBar;
+import android.app.ActivityManager;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.support.v13.app.FragmentPagerAdapter;
@@ -67,9 +69,16 @@ public class MainActivity extends Activity implements ActionBar.TabListener ,Mai
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Intent intent = new Intent();
-        intent.setClass(this,GetDataIntentService.class);
-        this.startService(intent);
+        Log.i(TAG,"Service Running:"+this.isMyServiceRunning(GetDataService.class));
+
+        if(!this.isMyServiceRunning(GetDataService.class)) {
+
+            Intent i = new Intent(this, GetDataService.class );
+            /* 設定新TASK的方式 */
+            i.setFlags( Intent.FLAG_ACTIVITY_NEW_TASK );
+            /* 以startService方法啟動Intent */
+            startService(i);
+        }
 
         // Set up the action bar.
         final ActionBar actionBar = getActionBar();
@@ -188,7 +197,18 @@ public class MainActivity extends Activity implements ActionBar.TabListener ,Mai
     }
 
 
-    @Override
+    private boolean isMyServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    /*@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
@@ -209,7 +229,7 @@ public class MainActivity extends Activity implements ActionBar.TabListener ,Mai
 
         }
         return super.onOptionsItemSelected(item);
-    }
+    }*/
 
     @Override
     public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {

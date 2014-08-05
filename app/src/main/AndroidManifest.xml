@@ -30,11 +30,7 @@
 
         <service
             android:name=".GetDataService"
-            android:enabled="false"
-            android:exported="false" >
-        </service>
-        <service
-            android:name=".GetDataIntentService"
+            android:enabled="true"
             android:exported="false" >
         </service>
     </application>

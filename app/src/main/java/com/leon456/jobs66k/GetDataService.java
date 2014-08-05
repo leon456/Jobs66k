@@ -1,6 +1,5 @@
 package com.leon456.jobs66k;
 
-import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -10,7 +9,6 @@ import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
@@ -21,33 +19,60 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-public class GetDataIntentService extends Service {
-    private static final String TAG = "GetDataIntentService";
+public class GetDataService extends Service {
+    private static final String TAG = "GetDataService";
     private SharedPreferences settings;
     private Handler handler = new Handler();
     private boolean hasNew = false;
     private String title;
     private String content;
 
+    public GetDataService() {
+    }
+
+    @Override
+    public void onCreate(){
+        //服務開始，即呼叫每1秒呼叫mTasks執行緒
+        Log.i(TAG,"-onCreate-");
+        handler.postDelayed(showTime, 1000);
+        super.onCreate();
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        Log.i(TAG,"-onStartCommand-");
+        return super.onStartCommand(intent, flags, startId);
+    }
+
     @Override
     public IBinder onBind(Intent intent) {
         return null;
     }
 
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        handler.postDelayed(showTime, 1000);
-        return super.onStartCommand(intent, flags, startId);
-    }
+    private void sendNotification(String title,String content){
+        SharedPreferences.Editor editor =  settings.edit();
+        editor.putString(content,content);
+        editor.commit();
 
-    @Override
-    public void onDestroy() {
-        handler.removeCallbacks(showTime);
-        super.onDestroy();
+        NotificationManager notificationManager=(NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+        //設定當按下這個通知之後要執行的activity
+        Intent notifyIntent = new Intent(GetDataService.this,MainActivity.class);
+        notifyIntent.setFlags( Intent.FLAG_ACTIVITY_NEW_TASK);
+        PendingIntent appIntent= PendingIntent.getActivity(GetDataService.this, 0,notifyIntent, 0);
+        Notification notification = new Notification();
+        //設定出現在狀態列的圖示
+        notification.icon= R.drawable.logo;
+        //顯示在狀態列的文字
+        notification.tickerText=getString(R.string.noti_title);
+        //會有通知預設的鈴聲、振動、light
+        notification.defaults=Notification.DEFAULT_ALL;
+        //設定通知的標題、內容
+        notification.setLatestEventInfo(GetDataService.this,title,content,appIntent);
+        //送出Notification
+        notificationManager.notify(0,notification);
     }
 
     private Runnable showTime = new Runnable() {
@@ -57,7 +82,7 @@ public class GetDataIntentService extends Service {
             final String[] categories = getResources().getStringArray(R.array.categories);
 
 
-            Ion.with(GetDataIntentService.this).load("http://66kjobs.tw/").asString()
+            Ion.with(GetDataService.this).load("http://66kjobs.tw/").asString()
                     .setCallback(new FutureCallback<String>() {
                         @Override
                         public void onCompleted(Exception e, String result) {
@@ -106,10 +131,11 @@ public class GetDataIntentService extends Service {
                                     }
                                 }
                             }
-
+                            Log.i(TAG,"-hasNew-"+hasNew);
                             if (hasNew) {
+                                Log.i(TAG,"-sendNotification-"+settings.getString(content,null));
                                 if(settings.getString(content,null)==null)
-                                    sendNotification(title, content);
+                                    sendNotification(title, content.replaceAll("NEW",""));
                             }
                         }
                     });
@@ -117,29 +143,4 @@ public class GetDataIntentService extends Service {
             handler.postDelayed(this, 24 * 60 * 60 * 1000);
         }
     };
-
-
-    private void sendNotification(String title,String content){
-        SharedPreferences.Editor editor =  settings.edit();
-        editor.putString(content,content);
-        editor.commit();
-
-        NotificationManager notificationManager=(NotificationManager)getSystemService(NOTIFICATION_SERVICE);
-        //設定當按下這個通知之後要執行的activity
-        Intent notifyIntent = new Intent(GetDataIntentService.this,MainActivity.class);
-        notifyIntent.setFlags( Intent.FLAG_ACTIVITY_NEW_TASK);
-        PendingIntent appIntent= PendingIntent.getActivity(GetDataIntentService.this, 0,notifyIntent, 0);
-        Notification notification = new Notification();
-        //設定出現在狀態列的圖示
-        notification.icon= R.drawable.logo;
-        //顯示在狀態列的文字
-        notification.tickerText=getString(R.string.noti_title);
-        //會有通知預設的鈴聲、振動、light
-        notification.defaults=Notification.DEFAULT_ALL;
-        //設定通知的標題、內容
-        notification.setLatestEventInfo(GetDataIntentService.this,title,content,appIntent);
-        //送出Notification
-        notificationManager.notify(0,notification);
-    }
-
 }
